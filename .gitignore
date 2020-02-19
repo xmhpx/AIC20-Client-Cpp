@@ -125,7 +125,3 @@ modules.xml
 
 build/*
 Build/*
-
-.vscode/
-client/src/main.cpp
-client/src/AI/AI/
