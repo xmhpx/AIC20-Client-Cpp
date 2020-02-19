@@ -8,8 +8,8 @@ using namespace std;
 int ap[10], rows, cols;
 void AI::pick(World* world)
 {
-    rows = world->getMap()->rowNum;
-    cols = world->getMap()->colNum;
+    rows = world->getMap()->getRowNum();
+    cols = world->getMap()->getColNum();
     world->chooseHand({ world->getBaseUnitById(0),
         world->getBaseUnitById(1),
         world->getBaseUnitById(3),
@@ -20,23 +20,24 @@ void AI::pick(World* world)
 }
 
 map<int, int> att_path_wei, def_path_wei, att_unit_wei, def_unit_wei; ///unit -> weight, path -> weight
-map<pair<int, int>, int> haste_wei, dup_wei, damage_wei, heal_wei, poison_wei; ///cell -> weight
+map<const Cell*, int> haste_wei, dup_wei, damage_wei, heal_wei, poison_wei; ///cell -> weight
 
 void compute_weights(World* world)
 {
-    Player *me = world->getMe(), *mate = world->getFriend(), *enemy1 = world->getFirstEnemy(), *enemy2 = world->getSecondEnemy();
+    const Player *me = world->getMe(), *mate = world->getFriend(), *enemy1 = world->getFirstEnemy(), *enemy2 = world->getSecondEnemy();
     for(int i = 1; i <= rows; i++){
         for(int j = 1; j <= cols; j++){
-            vector<Unit> units = getCellUnits(i, j);
-            for(Unit unit : units){
-                if(unit.playerId == world->getFirstEnemy()->playerId || unit.playerId == world->getSecondEnemy()->playerId){
-                    damage_wei[i][j] += min(max(0, unit.hp-1), 4) * ((unit.target != nullptr) * 2 + 1) * ((unit.baseUnit.isMultiple)*2 + 1);
-                    poison_wei[i][j] += min(max(0, unit.hp-1), 5) * ((unit.target != nullptr) + 1) * ((unit.baseUnit.isMultiple) + 1);
+            const Cell* cur = world->getMap()->cell(i, j);
+            vector<const Unit*> units = world->getCellUnits(i, j);
+            for(const Unit* unit : units){
+                if(unit->getPlayerId == world->getFirstEnemy()->getPlayerId || unit->getPlayerId == world->getSecondEnemy()->getPlayerId){
+                    damage_wei[cur] += min(max(0, unit->getHp()-1), 4) * ((unit->getTarget() != nullptr) * 2 + 1) * ((unit->getBaseUnit()->isMultiple()) * 2 + 1);
+                    poison_wei[cur] += min(max(0, unit->getHp()-1), 5) * ((unit->getTarget() != nullptr) + 1) * ((unit->getBaseUnit()->isMultiple()) + 1);
                 }
                 else{
-                    haste_wei[i][j] += min(max(0, unit.hp-1) * (unit.range+1) * unit.attack * ((unit.baseUnit.isMultiple) + 1), 1000);
-                    heal_wei[i][j] += min(unit.baseUnit.maxHP - unit.hp, 2) * unit.range * unit.attack * ((unit.baseUnit.isMultiple) + 1);
-                    dup_wei[i][j] += (unit.hp/4) * (unit.attack/4) * unit.range * ((unit.baseUnit.isMultiple) + 1);
+                    haste_wei[cur] += min(max(0, unit->getHp()-1) * (unit->getRange()+1) * unit->getAttack() * ((unit->getBaseUnit()->isMultiple()) + 1), 1000);
+                    heal_wei[cur] += min(unit->getBaseUnit()->getMaxHp() - unit->getHp(), 2) * unit->getRange() * unit->getAttack() * ((unit->getBaseUnit()->isMultiple()) + 1);
+                    dup_wei[cur] += (unit->getHp()/4) * (unit->getAttack()/4) * unit->getRange() * ((unit->getBaseUnit()->isMultiple()) + 1);
                 }
             }
         }
