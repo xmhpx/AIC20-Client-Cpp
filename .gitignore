@@ -128,4 +128,4 @@ Build/*
 
 .vscode/
 client/src/main.cpp
-client/src/AI/AI/
+client/src/AI/AI/*
