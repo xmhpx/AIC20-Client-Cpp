@@ -37,11 +37,12 @@ void compute_weights(World* world)
                 else{
                     haste_wei[cur] += (unit->getTargetIfKing() == nullptr) * (min(max(0, unit->getHp()-1) * (unit->getRange()+1) * unit->getAttack() * ((unit->getBaseUnit()->isMultiple()) + 1), 1000));
                     heal_wei[cur] += min(unit->getBaseUnit()->getMaxHp() - unit->getHp(), 2) * unit->getRange() * unit->getAttack() * ((unit->getBaseUnit()->isMultiple()) + 1);
-                    dup_wei[cur] += ((!(unit->getTargetIfKing() == nullptr)) + 1) * ((unit->getHp()/4) * (unit->getAttack()/4) * unit->getRange() * ((unit->getBaseUnit()->isMultiple()) + 1));
+                    dup_wei[cur] += min(((unit->getTarget() != nullptr)*2 + 1) * ((!(unit->getTargetIfKing() == nullptr)) + 1) * ((unit->getHp()/4) * (unit->getAttack()/4) * unit->getRange() * ((unit->getBaseUnit()->isMultiple()) + 1)), 1000);
                 }
             }
         }
     }
+
 }
 
 void AI::turn(World* world)
