@@ -6,7 +6,6 @@
 using namespace std;
 
 int ap[10];
-
 void AI::pick(World* world)
 {
     world->chooseHand({ world->getBaseUnitById(0),
@@ -18,8 +17,14 @@ void AI::pick(World* world)
     fill(ap, ap + 10, 10);
 }
 
+map<int, int> path_wei, unit_wei, cell_wei;
+void compute_weights(World* world)
+{
+}
+
 void AI::turn(World* world)
 {
+    compute_weights(world);
 }
 
 void AI::end(World* world, std::map<int, int>& scores)
