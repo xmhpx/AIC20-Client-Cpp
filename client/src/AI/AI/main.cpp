@@ -5,11 +5,11 @@
 
 using namespace std;
 
-int ap[10], rows, culs;
+int ap[10], rows, cols;
 void AI::pick(World* world)
 {
-    rows = world->getRows();
-    culs = world->getCulomns();
+    rows = world->getMap()->rowNum;
+    cols = world->getMap()->colNum;
     world->chooseHand({ world->getBaseUnitById(0),
         world->getBaseUnitById(1),
         world->getBaseUnitById(3),
@@ -19,10 +19,25 @@ void AI::pick(World* world)
     fill(ap, ap + 10, 10);
 }
 
-map<int, int> path_wei, unit_wei, cell_wei;
+map<int, int> att_path_wei, def_path_wei, att_unit_wei, def_unit_wei; ///unit -> weight, path -> weight
+map<pair<int, int>, int> hiest_wei, dup_wei, damage_wei, heal_wei, poison_wei; ///cell -> weight
+
 void compute_weights(World* world)
 {
-    for(int i = 0; i < rows)
+    Player me = world->getMe(), mate = world->getFriend(), enemy1 = world->getFirstEnemy(), enemy2 = world->getSecondEnemy();
+    for(int i = 1; i <= rows; i++){
+        for(int j = 1; j <= cols; j++){
+            vector<Unit> units = getCellUnits(i, j);
+            for(Unit unit : units){
+                if(unit->playerId == world->getFirstEnemy()->playerId || unit->playerId == world->getSecondEnemy()->playerId){
+
+                }
+                else{
+                    if(unit->playerId = me->playerId);
+                }
+            }
+        }
+    }
 }
 
 void AI::turn(World* world)
