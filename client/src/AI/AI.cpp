@@ -30,7 +30,7 @@ void compute_weights(World* world)
             const Cell* cur = world->getMap()->cell(i, j);
             vector<const Unit*> units = world->getCellUnits(i, j);
             for(const Unit* unit : units){
-                if(unit->getPlayerId == world->getFirstEnemy()->getPlayerId || unit->getPlayerId == world->getSecondEnemy()->getPlayerId){
+                if(unit->getPlayerId() == world->getFirstEnemy()->getPlayerId() || unit->getPlayerId() == world->getSecondEnemy()->getPlayerId()){
                     damage_wei[cur] += min(max(0, unit->getHp()-1), 4) * ((unit->getTarget() != nullptr) * 2 + 1) * ((unit->getBaseUnit()->isMultiple()) * 2 + 1);
                     poison_wei[cur] += min(max(0, unit->getHp()-1), 5) * ((unit->getTarget() != nullptr) + 1) * ((unit->getBaseUnit()->isMultiple()) + 1);
                 }
