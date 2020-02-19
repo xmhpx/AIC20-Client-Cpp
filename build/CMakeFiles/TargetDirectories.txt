@@ -1,0 +1,5 @@
+/home/amirali/aic20/Code/build/CMakeFiles/rebuild_cache.dir
+/home/amirali/aic20/Code/build/CMakeFiles/edit_cache.dir
+/home/amirali/aic20/Code/build/client/CMakeFiles/rebuild_cache.dir
+/home/amirali/aic20/Code/build/client/CMakeFiles/client.dir
+/home/amirali/aic20/Code/build/client/CMakeFiles/edit_cache.dir
